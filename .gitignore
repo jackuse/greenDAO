@@ -1,5 +1,4 @@
 .gradle
-<<<<<<< HEAD
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
@@ -74,10 +73,3 @@ crashlytics-build.properties
 
 Thumbs.db
 
-=======
-*.iml
-.idea/
-out/
-build/
-local.properties
->>>>>>> d49f1800a64504e693962c47d0f49cda46301685

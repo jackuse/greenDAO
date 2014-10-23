@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-/build
-=======
 /gen
 /bin
 /release
 /build
 /gradle.properties
->>>>>>> d49f1800a64504e693962c47d0f49cda46301685
+

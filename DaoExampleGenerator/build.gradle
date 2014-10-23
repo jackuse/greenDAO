@@ -21,8 +21,7 @@ run {
 }
 
 
-//=======ORG=======
-//apply plugin: 'maven'
+//=======ORG=======//apply plugin: 'maven'
 //apply plugin:'application'
 //
 //group = 'de.greenrobot'
