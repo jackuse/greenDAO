@@ -22,6 +22,8 @@ along with greenDAO Generator.  If not, see <http://www.gnu.org/licenses/>.
 <#assign complexTypes = ["String", "ByteArray", "Date"]/>
 package ${entity.javaPackage};
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 <#if entity.toManyRelations?has_content>
 import java.util.List;
 </#if>
@@ -215,6 +217,11 @@ property>${property.javaType} ${property.propertyName}<#if property_has_next>, <
         return ${toMany.name};
     }
 
+    /** Set to-many relationship */
+    public void set${toMany.name?cap_first}(List<${toMany.targetEntity.className}> ${toMany.name}) {
+        this.${toMany.name} = ${toMany.name};
+    }
+
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
     public synchronized void reset${toMany.name?cap_first}() {
         ${toMany.name} = null;
@@ -257,4 +264,28 @@ property>${property.javaType} ${property.propertyName}<#if property_has_next>, <
 ${keepMethods!}    // KEEP METHODS END
 
 </#if>
+
+<#--
+##########################################
+####### equals and hashCode methods ######
+##########################################
+-->
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof ${entity.className}){
+            ${entity.className} other = (${entity.className})o;
+            return <#list entity.properties as property>Objects.equal(${property.propertyName}, other.${property.propertyName})<#if property_has_next> && </#if></#list>;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(<#list entity.properties as property>${property.propertyName}<#if property_has_next>, </#if></#list>);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)<#list entity.properties as property>.add("${property.propertyName}", ${property.propertyName})</#list>.toString();
+    }
 }

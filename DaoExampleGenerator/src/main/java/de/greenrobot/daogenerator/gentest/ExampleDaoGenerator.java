@@ -30,8 +30,11 @@ import de.greenrobot.daogenerator.ToMany;
  */
 public class ExampleDaoGenerator {
 
+    private static final int VERSION = 1000;
+    private static final String PACKAGE_ENTITY_NAME = "de.greenrobot.daoexample";
+
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(1000, "de.greenrobot.daoexample");
+        Schema schema = new Schema(VERSION, PACKAGE_ENTITY_NAME);
 
         addNote(schema);
         addCustomerOrder(schema);
