@@ -6,7 +6,7 @@ dependencies {
     compile project(':DaoGenerator')
 }
 
-mainClassName = "de.greenrobot.daogenerator.gentest.ExampleDaoGenerator"
+//mainClassName = "de.greenrobot.daogenerator.gentest.ExampleDaoGenerator"
 
 //outputDir = "../DaoTest/src/test/java-gen"
 outputDir = "../DaoExample/src/main/java-gen"

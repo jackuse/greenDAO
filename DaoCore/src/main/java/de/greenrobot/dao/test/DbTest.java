@@ -20,9 +20,10 @@ import android.app.Application;
 import android.app.Instrumentation;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
-import de.greenrobot.dao.DbUtils;
 
 import java.util.Random;
+
+import de.greenrobot.dao.DbUtils;
 
 /**
  * Base class for database related testing, which prepares an in-memory or an file-based DB (using the test {@link
@@ -61,6 +62,7 @@ public abstract class DbTest extends AndroidTestCase {
     }
 
     /** Returns a prepared application with the onCreate method already called. */
+    @SuppressWarnings("unchecked")
     public <T extends Application> T createApplication(Class<T> appClass) {
         assertNull("Application already created", application);
         T app;
@@ -82,6 +84,7 @@ public abstract class DbTest extends AndroidTestCase {
     }
 
     /** Gets the previously created application. */
+    @SuppressWarnings("unchecked")
     public <T extends Application> T getApplication() {
         assertNotNull("Application not yet created", application);
         return (T) application;

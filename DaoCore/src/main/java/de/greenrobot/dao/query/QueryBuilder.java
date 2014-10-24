@@ -256,11 +256,28 @@ public class QueryBuilder<T> {
      * each execution.
      */
     public Query<T> build() {
+        return build(false);
+    }
+
+    /**
+     * Builds a reusable query object (Query objects can be executed more efficiently than creating a QueryBuilder for
+     * each execution.
+     */
+    public Query<T> build(boolean onlyPk) {
         String select;
         if (joinBuilder == null || joinBuilder.length() == 0) {
-            select = InternalQueryDaoAccess.getStatements(dao).getSelectAll();
+//            select = InternalQueryDaoAccess.getStatements(dao).getSelectAll();
+//            select = onlyPk
+//                    ? dao.getStatements().getSelectPk()
+//                    : dao.getStatements().getSelectAll();
+            select = onlyPk
+                    ? InternalQueryDaoAccess.getStatements(dao).getSelectPk()
+                    : InternalQueryDaoAccess.getStatements(dao).getSelectAll();
         } else {
-            select = SqlUtils.createSqlSelect(dao.getTablename(), tablePrefix, dao.getAllColumns());
+//            select = SqlUtils.createSqlSelect(dao.getTablename(), tablePrefix, dao.getAllColumns());
+            select = onlyPk
+                    ? SqlUtils.createSqlSelect(dao.getTablename(), tablePrefix, dao.getPkColumns())
+                    : SqlUtils.createSqlSelect(dao.getTablename(), tablePrefix, dao.getAllColumns());
         }
         StringBuilder builder = new StringBuilder(select);
 
@@ -304,6 +321,39 @@ public class QueryBuilder<T> {
      * QueryBuilder for each execution.
      */
     public DeleteQuery<T> buildDelete() {
+        if(limit != null || (orderBuilder != null && orderBuilder.length() > 0)) {
+            return buildDeleteWithLimitAndOrder();
+        }
+        return buildSimpleDelete();
+    }
+
+    /**
+     * Android does not come with SQLITE_ENABLE_UPDATE_DELETE_LIMIT option enabled which prevents us from writing
+     * delete queries with limit and order. This method overcomes that limitation by re-writing the query as an IN
+     * statement
+     *
+     * */
+    protected DeleteQuery<T> buildDeleteWithLimitAndOrder() {
+        if(dao.getPkColumns().length != 1) {
+            throw new UnsupportedOperationException("Delete with Limit and Order is only supported "
+                    + "for tables with 1 PK column");
+        }
+        Query<T> selectQuery = build(true);
+        String baseSql = SqlUtils.createSqlDelete(dao.getTablename(), null);
+        StringBuilder builder = new StringBuilder(baseSql);
+        builder.append(" WHERE ").append(dao.getPkColumns()[0])
+                .append(" IN( ").append(selectQuery.getSql()).append(" )");
+        String sql = builder.toString();
+        if (LOG_SQL) {
+            DaoLog.d("Built SQL for delete query: " + sql);
+        }
+        if (LOG_VALUES) {
+            DaoLog.d("Values for delete query: " + values);
+        }
+        return DeleteQuery.create(dao, sql, values.toArray());
+    }
+
+    protected DeleteQuery<T> buildSimpleDelete() {
         String tablename = dao.getTablename();
         String baseSql = SqlUtils.createSqlDelete(tablename, null);
         StringBuilder builder = new StringBuilder(baseSql);

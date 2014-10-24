@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+
 /** Database utils, for example to execute SQL scripts */
 // TODO add unit tests
 public class DbUtils {
@@ -115,13 +116,6 @@ public class DbUtils {
     }
 
     public static byte[] readAsset(Context context, String filename) throws IOException {
-//        String s ="";
-//        for(String str : context.getResources().getAssets().list(".")){
-//            Log.e("my test",str);
-//            s+=str+" / ";
-//        }
-//        throw new IOException(s);
-
         InputStream in = context.getResources().getAssets().open(filename);
         try {
             return readAllBytes(in);

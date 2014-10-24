@@ -1,4 +1,4 @@
-include ':app', ':DaoCore', ':DaoGenerator', ':DaoTest', ':DaoExampleGenerator', ':DaoExample'
+include ':app', ':DaoCore', ':DaoGenerator', ':DaoTest', ':DaoExampleGenerator', ':DaoExample', ':PerformanceTestOrmLite'
 //=======ORG=======
 //include 'DaoCore', 'DaoGenerator', 'DaoExampleGenerator'
 //include 'DaoTest' // Travis needs some Android setup for this

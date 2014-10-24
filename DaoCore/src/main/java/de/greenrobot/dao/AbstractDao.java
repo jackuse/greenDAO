@@ -23,10 +23,6 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
-import de.greenrobot.dao.AbstractDaoSession;
-import de.greenrobot.dao.DaoException;
-import de.greenrobot.dao.DaoLog;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -92,7 +88,7 @@ public abstract class AbstractDao<T, K> {
         return session;
     }
 
-    TableStatements getStatements() {
+    public TableStatements getStatements() {
         return config.statements;
     }
 
@@ -258,6 +254,40 @@ public abstract class AbstractDao<T, K> {
      */
     public void insertOrReplaceInTx(T... entities) {
         insertOrReplaceInTx(Arrays.asList(entities), isEntityUpdateable());
+    }
+
+    /**
+     * Inserts or ignores the given entities in the database using a transaction. The given entities will become
+     * tracked if the PK is set.
+     *
+     * @param entities
+     * The entities to insert.
+     * @param setPrimaryKey
+     * if true, the PKs of the given will be set after the insert; pass false to improve performance.
+     */
+    public void insertOrIgnoreInTx(Iterable<T> entities, boolean setPrimaryKey) {
+        SQLiteStatement stmt = statements.getInsertOrIgnoreStatement();
+        executeInsertInTx(stmt, entities, setPrimaryKey);
+    }
+
+    /**
+     * Inserts or ignores the given entities in the database using a transaction.
+     *
+     * @param entities
+     * The entities to insert.
+     */
+    public void insertOrIgnoreInTx(Iterable<T> entities) {
+        insertOrIgnoreInTx(entities, isEntityUpdateable());
+    }
+
+    /**
+     * Inserts or ignores the given entities in the database using a transaction.
+     *
+     * @param entities
+     * The entities to insert.
+     */
+    public void insertOrIgnoreInTx(T... entities) {
+        insertOrIgnoreInTx(Arrays.asList(entities), isEntityUpdateable());
     }
 
     private void executeInsertInTx(SQLiteStatement stmt, Iterable<T> entities, boolean setPrimaryKey) {

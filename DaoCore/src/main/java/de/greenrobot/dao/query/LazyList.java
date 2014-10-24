@@ -15,6 +15,8 @@
  */
 package de.greenrobot.dao.query;
 
+import android.database.Cursor;
+
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +26,6 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.concurrent.locks.ReentrantLock;
 
-import android.database.Cursor;
 import de.greenrobot.dao.DaoException;
 import de.greenrobot.dao.InternalQueryDaoAccess;
 
@@ -334,7 +335,7 @@ public class LazyList<E> implements List<E>, Closeable {
     public List<E> subList(int start, int end) {
         checkCached();
         for (int i = start; i < end; i++) {
-            entities.get(i);
+            get(i);
         }
         return entities.subList(start, end);
     }

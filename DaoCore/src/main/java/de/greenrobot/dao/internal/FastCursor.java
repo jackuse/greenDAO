@@ -184,7 +184,7 @@ final public class FastCursor implements Cursor {
 
     @Override
     public boolean isNull(int columnIndex) {
-        return window.isNull(position, columnIndex);
+        return window.getType(position, columnIndex) == FIELD_TYPE_NULL;
     }
 
     @Override

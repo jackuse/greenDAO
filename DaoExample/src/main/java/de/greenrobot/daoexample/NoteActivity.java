@@ -48,7 +48,10 @@ public class NoteActivity extends ListActivity {
 
     private Cursor cursor;
 
+    String orderBy;
+
     @Override
+    @SuppressWarnings("deprecation")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -61,10 +64,11 @@ public class NoteActivity extends ListActivity {
         noteDao = daoSession.getNoteDao();
 
         String textColumn = NoteDao.Properties.Text.columnName;
-        String orderBy = textColumn + " COLLATE LOCALIZED ASC";
+        orderBy = textColumn + " COLLATE LOCALIZED ASC";
         cursor = db.query(noteDao.getTablename(), noteDao.getAllColumns(), null, null, null, null, orderBy);
         String[] from = { textColumn, NoteDao.Properties.Comment.columnName };
         int[] to = { android.R.id.text1, android.R.id.text2 };
+
 
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor, from,
                 to);
@@ -121,14 +125,16 @@ public class NoteActivity extends ListActivity {
         noteDao.insert(note);
         Log.d("DaoExample", "Inserted new note, ID: " + note.getId());
 
-        cursor.requery();
+//        cursor.requery();
+        cursor = db.query(noteDao.getTablename(), noteDao.getAllColumns(), null, null, null, null, orderBy);
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         noteDao.deleteByKey(id);
         Log.d("DaoExample", "Deleted note, ID: " + id);
-        cursor.requery();
+        cursor = db.query(noteDao.getTablename(), noteDao.getAllColumns(), null, null, null, null, orderBy);
+//        cursor.requery();
     }
 
 }

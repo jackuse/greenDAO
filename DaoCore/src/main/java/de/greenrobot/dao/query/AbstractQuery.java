@@ -61,6 +61,14 @@ abstract class AbstractQuery<T> {
     // // TODO implement compile
     // }
 
+    public String getSql() {
+        return sql;
+    }
+
+    public String[] getParameters() {
+        return parameters;
+    }
+
     /**
      * Sets the parameter (0 based) using the position in which it was added during building the query.
      */
