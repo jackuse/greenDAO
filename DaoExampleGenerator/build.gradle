@@ -9,15 +9,15 @@ dependencies {
 //mainClassName = "de.greenrobot.daogenerator.gentest.ExampleDaoGenerator"
 
 //outputDir = "../DaoTest/src/test/java-gen"
-outputDir = "../DaoExample/src/main/java-gen"
+def outputGenDir = "../DaoExample/src/main/java-gen"
 
 task createDocs {
-    def docs = file(outputDir)
+    def docs = file(outputGenDir)
     docs.mkdirs()
 }
 
 run {
-    args outputDir
+    args outputGenDir
 }
 
 

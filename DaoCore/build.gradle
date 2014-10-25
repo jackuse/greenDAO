@@ -1,13 +1,22 @@
 apply plugin: 'com.android.library'
 
+
 android {
-    compileSdkVersion 19
-    buildToolsVersion "20.0.0"
+//    compileSdkVersion 19
+//    buildToolsVersion "20.0.0"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    lintOptions {
+        abortOnError false
+    }
 
     defaultConfig {
         applicationId "de.greenrobot.dao"
-        minSdkVersion 15
-        targetSdkVersion 19
+//        minSdkVersion 15
+//        targetSdkVersion 19
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
     }

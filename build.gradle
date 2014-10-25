@@ -5,7 +5,9 @@ buildscript {
         jcenter()
     }
     dependencies {
+        //update to 0.13.3 when new release of Android Studio Beta
         classpath 'com.android.tools.build:gradle:0.12.2'
+
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -13,10 +15,29 @@ buildscript {
 }
 
 allprojects {
+//    version = VERSION_NAME
+//    group = GROUP
+
     repositories {
         jcenter()
     }
 }
+
+ext {
+    compileSdkVersion = 19
+    buildToolsVersion = "20.0.0"
+
+    minSdkVersion = 15
+    targetSdkVersion = 19
+}
+
+def isReleaseBuild() {
+    return version.contains("SNAPSHOT") == false
+}
+
+//connectCheck {
+//    DaoTest.connectCheck
+//}
 
 //task wrapper(type: Wrapper) {
 //    gradleVersion = '1.12'
